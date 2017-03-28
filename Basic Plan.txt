@@ -1,0 +1,47 @@
+
+Assignment 3
+
+Preparation
+    Players
+     Type 
+     Name
+     Same capabilities
+    7x7 square board of slots
+    Each slot refferences adjacent slots
+    Random generated slot types
+    Players placed in slots randomly
+    
+Execution
+    At least 2 players in the game
+    Rounds
+     Move to a slot
+      Capabilities changed in relation to section C (same as assignment 2)
+     Attack
+      Near attack player in same slot or adjecent slots
+       Same as attack in assignment 2
+      Distant attack
+       1 < distance < 5
+        If attacked has less Dexterity -0.3*attacker strength, otherwise nothing. 
+      Magic Attack
+       against any player
+       smartness = magic skill > 150
+       damage: 0.5 * magic skill + 0.2 * smartness
+     Quit
+    Life <= 0 Player leaves the game
+    
+Termination
+    Only one living player left
+    All players have qiut the game
+
+pointers for cornes of board
+board with linked lists
+recursion for attacks 
+
+Things we already have:
+    Input for payers 
+    Capabilities generation
+    Input for moving
+    Near attack implementation
+
+
+
