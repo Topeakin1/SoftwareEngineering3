@@ -6,8 +6,8 @@ Preparation
      Type 
      Name
      Same capabilities
-    7x7 square board of slots
-    Each slot refferences adjacent slots
+  - 7x7 square board of slots
+  - Each slot refferences adjacent slots
     Random generated slot types
     Players placed in slots randomly
     

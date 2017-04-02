@@ -3,8 +3,8 @@
 
 // Defined constant variables
 #define PLAYER_MAX 6
-#define SLOT_MAX 20
 #define MAX_STRING_LENGTH 20
+#define BOARD_SIZE 7
 
 enum playerTypes{
     Elf,
@@ -13,8 +13,16 @@ enum playerTypes{
     Wizard
 };
 
+// Struct for board positions.
+typedef struct Position
+{
+    int row;
+    int column;
+} Position;
+
 // Structs for players and slots.
-typedef struct Player{
+typedef struct Player
+{
     enum playerTypes type;
     char name[MAX_STRING_LENGTH];
     int lifePoints;
@@ -23,11 +31,22 @@ typedef struct Player{
     int magicSkill;
     int luck;
     int dexterity;
+    
+    Position *playerPosition;
 } Player;
 
-typedef struct Slot{
+typedef struct Slot
+{
+    Player ** currentPlayers;
+    int currentPlayerCount;
     char slotType[MAX_STRING_LENGTH];
-    int currentPlayer;
+    
+    Position *slotPosition;
+    
+    struct Slot * up;
+    struct Slot * down;
+    struct Slot * left;
+    struct Slot * right;
 } Slot;
 
 

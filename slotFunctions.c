@@ -50,3 +50,55 @@ void PlayersNSlots(struct Slot Slots[],int NumberOfSlots)
 		Slots[j].currentPlayer = i;
 	}
 }
+
+
+/* Functiion to create the game board. 
+ I am thinking we store the four corners in an array that we pass into the 
+ function through a three dimentional pointer.
+ */
+void createBoard(Slot ***boardCorners)
+{
+    // Alocates the board to store one column.
+    Slot ** board = malloc(BOARD_SIZE * sizeof(Slot *));
+    
+    for(int row = 0; row < BOARD_SIZE; row++)
+    {
+        board[row] = malloc(BOARD_SIZE * sizeof(Slot));
+        // Alocates each element in the column to store a row.
+        
+        for(int column = 0; column < BOARD_SIZE; column++)
+        {
+            board[row][column].slotPosition = malloc(sizeof(Position));
+            *(board[row][column].slotPosition) = (Position){row, column};
+            // Gives every slot the correct position.
+        }
+    }
+    
+    // Connects each element of a each row except the last with the element directly below it. 
+    for(int row = 0; row < BOARD_SIZE - 1; row++)
+    {
+        for(int column = 0; column < BOARD_SIZE; column++)
+        {
+            board[row][column].down = &board[row + 1][column];
+            board[row + 1][column].up = &board[row][column];
+        }
+    }
+    
+    // Connects each element of a each column except the last with the element directly to the right of it. 
+    for(int row = 0; row < BOARD_SIZE; row++)
+    {
+        for(int column = 0; column < BOARD_SIZE - 1; column++)
+        {
+            board[row][column].right = &board[row][column + 1];
+            board[row][column + 1].left = &board[row][column];
+        }
+    }
+    
+    
+    // Stores the four corners.
+    (*boardCorners)[0] = &board[0][0];
+    (*boardCorners)[1] = &board[0][BOARD_SIZE - 1];
+    (*boardCorners)[2] = &board[BOARD_SIZE - 1][BOARD_SIZE - 1];
+    (*boardCorners)[3] = &board[BOARD_SIZE - 1][0];
+}
+
