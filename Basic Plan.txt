@@ -44,4 +44,66 @@ Things we already have:
     Near attack implementation
 
 
+    
+    
+    
+Things we need:
+    Input function
+        printf("/n : ");
+        fgets(placeholder, size, stdin);
+        while(getchar != '\n');
+    
+    Number input function
+        do{
+        printf("/n : ");
+        fgets(placeholder, size, stdin);
+        while(getchar != '\n');]
+        }while(strtol(placeholder) != 0);
 
+
+        
+        
+        
+Gameplay
+(This is how the game will look when we acctually run it except for things in brackets.)
+ Welcome to CrossFire
+ Input first player  (enter to stop input(if at least 2 players have joined).Max 6 players)
+ : 
+ Input player type
+ : 
+ Characteristics:
+ Int: x
+ Str: y
+ etc.
+ 
+ Round 1
+ -player-
+ 1 Move Left
+ 2 Move Right
+ 3 Move Up
+ 4 Move Down
+ 5 Near Attack
+  1 Attack player a
+  2 
+  3
+ 6 Distant Attack
+ 7 Magic Attack
+ Q Quit
+ 
+ (Options only displlay if possible)
+ 
+ (On move, show changed capabilities.
+ On attack show damage dealt.
+ On quit comfirm and then go to next player. )
+ 
+ (If health is 0)
+ -player- has died. Press any key to continue.
+ 
+ (When a new round starts and there are < 2 players left)
+ The Game has ended
+ 
+ Player x
+ Characteristics
+ (Died or quit)
+ 
+ Winner Player x (Or if no winner, say so.)
