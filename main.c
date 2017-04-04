@@ -15,10 +15,10 @@ int main(void) {
 			printf("Enter 1 to attack 2 to quit 3 to move\n");
 			scanf(%d,&choice);
 			if(choice==1) {
-				//attack function
+				attackPlayer(*attacker,*attacked);
 			} 
 			else if(choice==3) {
-				//move function
+				 movePlayer(*player,*slots, currentPosition, newPosition);
 			} 
 			else(choice==2) {
 				//quit
