@@ -9,5 +9,14 @@ int main(void) {
     
 	int slotsCount;
 	int playersCount;    
+	
+	for(i=0; i<playersCount; i++) {
+		if(players[i].lifePoints == 0) {
+			printf("Unfortunately this player is dead\n");
+		}
+		else {
+			puts(" ")
+		}
+	}
 }
 	
