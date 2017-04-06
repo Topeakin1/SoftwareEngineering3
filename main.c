@@ -5,13 +5,21 @@
 int main(void) {
 	srand(time(NULL));
 	Player players[PLAYER_MAX]; 
-    Slot slots[SLOT_MAX];
     
-	int slotsCount;
-	int playersCount;    
+    
+	int alivePlayers;
+	int playersCount; 
+	   
+	while (alivePlayers>=2) {
+		alivePlayers= PlayersCount;
+	    if(players[i].lifePoints==0) {
+		  alivePlayers--;
+		  printf("The %s is dead \n",players[i]);
+	}
 	
-	for(i=0; i<playersCount; i++) {
-		if(players[i].lifePoints>0) {
+	
+	      for(i=0; i<playersCount; i++) {
+		    if(players[i].lifePoints>0) {
 			printf("Enter 1 to attack 2 to quit 3 to move\n");
 			scanf(%d,&choice);
 			if(choice==1) {
@@ -26,6 +34,12 @@ int main(void) {
 		}
 		
 			puts(" ");
+		}
+	}
+		 
+		}
+		
+			
 		}
 	}
 }
