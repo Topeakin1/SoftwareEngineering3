@@ -389,7 +389,7 @@ void Print(Player *players, int numberOfPlayers) {
 >>>>>>> 9db4c41b3d884227a4b440f5409f0f5c61c70ad5
 
 
-void GameRound() //prototype
+void GameRound(int alivePlayers, Player) //prototype
 	for(i=0; i<playersCount; i++) {
 	   if(players[i].lifePoints>0) {
 	   printf("Enter 1 to attack 2 to quit 3 to move\n");
