@@ -17,7 +17,7 @@ int main(void) {
 		  printf("The %s is dead \n",players[i]);
 	}
 	
-	     void GameRound();//function cLL
+	     void GameRound(int alivePlayers, Player);//function cLL
 	}
 		 
 		}
