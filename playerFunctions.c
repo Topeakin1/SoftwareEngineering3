@@ -387,3 +387,23 @@ void Print(Player *players, int numberOfPlayers) {
 =======
 }
 >>>>>>> 9db4c41b3d884227a4b440f5409f0f5c61c70ad5
+
+
+void GameRound() //prototype
+	for(i=0; i<playersCount; i++) {
+	   if(players[i].lifePoints>0) {
+	   printf("Enter 1 to attack 2 to quit 3 to move\n");
+	   scanf(%d,&choice);
+	   if(choice==1) 
+	   {
+		attackPlayer(*attacker,*attacked);
+		} 
+			else if(choice==3) {
+				 movePlayer(*player,*slots, currentPosition, newPosition);
+			} 
+			else(choice==2) {
+				//quit
+			}
+		}
+			puts(" ");
+		}
