@@ -416,3 +416,13 @@ void PlayersInSlots(Player *player) {
 	printf("\nThe players coordinates are: %d.%d",player->playerPosition->row,player->playerPosition->column);
 	
 }
+
+void EndOfGame() {
+	int i;
+	i=0;
+	printf("The game is over!\n");
+	while(players[i].lifepoints<0) {
+		i++;
+	}
+	printf("The %s is alive\n",players[i].name);
+}
