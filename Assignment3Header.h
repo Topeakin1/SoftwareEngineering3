@@ -69,8 +69,7 @@ void attackPlayer(Player *attacker, Player *attacked);
 void Print(Player *players, int numberOfPlayers);
 
 // Slot functions
-void FillSlotArray(int NumberOfSlots,struct Slot Slots[]);
-int NumberOfSlots(int PlayersCount);
+void createBoard(Slot ***boardCorners);
 void PlayersNSlots(struct Slot Slots[],int NumberOfSlots);
 
 

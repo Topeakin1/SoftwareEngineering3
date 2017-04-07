@@ -4,34 +4,6 @@
 #include <string.h>
 #include "Assignment2Header.h"
 
-void FillSlotArray(int NumberOfSlots,struct Slot Slots[]) {
-	char SlotTypes[3][15] = {"Level Ground","Hill","City"};
-	int i, random;
-	srand(time(NULL));
-	
-	for(i=0; i<NumberOfSlots; i++) {
-		random=rand() %3;
-		strcpy(Slots[i].slotType,SlotTypes[random]); //assigning my slots
-	}
-	for(i=0; i<NumberOfSlots; i++) {
-		printf("| %s |\n", Slots[i].slotType); //printing out to check
-	}
-	
-}
-
-int NumberOfSlots(int PlayersCount) {
-	int reply;
-    char tempInput[MAX_STRING_LENGTH];
-	
-	printf("Please enter the number of slots between %d and 20\n", PlayersCount);
-	do
-    {
-        printf("  : ");
-        fgets(tempInput, MAX_STRING_LENGTH - 1, stdin);
-        reply = strtol(tempInput, NULL, 10);
-	}while(reply < PlayersCount || reply > SLOT_MAX);
-	return reply;
-}
 
 void PlayersNSlots(struct Slot Slots[],int NumberOfSlots)
 {
@@ -60,6 +32,8 @@ void createBoard(Slot ***boardCorners)
 {
     // Alocates the board to store one column.
     Slot ** board = malloc(BOARD_SIZE * sizeof(Slot *));
+    // Stores possible slot types.
+    char *slotTypes[3] = {"Level Ground","Hill","City"};
     
     for(int row = 0; row < BOARD_SIZE; row++)
     {
@@ -70,6 +44,7 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].slotPosition = malloc(sizeof(Position));
             *(board[row][column].slotPosition) = (Position){row, column};
+            strcpy(board[row][column].slotType, slotTypes[RandInt(0, 2)]);
             // Gives every slot the correct position.
         }
     }
@@ -81,6 +56,8 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].down = &board[row + 1][column];
             board[row + 1][column].up = &board[row][column];
+            printf("(%d, %d) %s\n   ^\n   |\n(%d, %d) %s\n", board[row][column].slotPosition->row, board[row][column].slotPosition->column,\
+            board[row][column].slotType, board[row + 1][column].slotPosition->row, board[row + 1][column].slotPosition->column, board[row + 1][column].slotType);
         }
     }
     
@@ -91,9 +68,10 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].right = &board[row][column + 1];
             board[row][column + 1].left = &board[row][column];
+            printf("(%d, %d) -> (%d, %d)\n %s -> %s\n", board[row][column].slotPosition->row, board[row][column].slotPosition->column, board[row][column + 1].slotPosition->row, board[row][column + 1].slotPosition->column,\
+            board[row][column].slotType, board[row][column + 1].slotType);
         }
     }
-    
     
     // Stores the four corners.
     (*boardCorners)[0] = &board[0][0];
