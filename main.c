@@ -9,6 +9,9 @@ int main(void) {
     
 	int alivePlayers;
 	int playersCount; 
+	
+	InputPlayerInfo(playersCount, players);
+	NumberOfPlayers();
 	   
 	while (alivePlayers>=2) {
 		alivePlayers= PlayersCount;
@@ -16,8 +19,8 @@ int main(void) {
 		  alivePlayers--;
 		  printf("The %s is dead \n",players[i]);
 	}
-	
-	     void GameRound(int alivePlayers, Player);//function cLL
+	GameRound(int alivePlayers, Player);//function call
+	     
 	}
 		 
 		}
