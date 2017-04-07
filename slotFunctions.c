@@ -56,7 +56,6 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].down = &board[row + 1][column];
             board[row + 1][column].up = &board[row][column];
-            printf("(%d, %d) %s\n   ^\n   |\n(%d, %d) %s\n", board[row][column].slotPosition->row, board[row][column].slotPosition->column,\
             board[row][column].slotType, board[row + 1][column].slotPosition->row, board[row + 1][column].slotPosition->column, board[row + 1][column].slotType);
         }
     }
@@ -68,7 +67,6 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].right = &board[row][column + 1];
             board[row][column + 1].left = &board[row][column];
-            printf("(%d, %d) -> (%d, %d)\n %s -> %s\n", board[row][column].slotPosition->row, board[row][column].slotPosition->column, board[row][column + 1].slotPosition->row, board[row][column + 1].slotPosition->column,\
             board[row][column].slotType, board[row][column + 1].slotType);
         }
     }
