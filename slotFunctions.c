@@ -5,25 +5,6 @@
 #include "Assignment2Header.h"
 
 
-void PlayersNSlots(struct Slot Slots[],int NumberOfSlots)
-{
-	int i, j;
-	for(i=0; i<NumberOfSlots; i++) 
-	{
-		Slots[i].currentPlayer=0;
-	}
-	
-	for(i=1; i<NumberOfSlots; i++)
-	{
-        do
-        {
-		j=rand() % NumberOfSlots;
-        }while(Slots[j].currentPlayer != 0);
-		Slots[j].currentPlayer = i;
-	}
-}
-
-
 /* Functiion to create the game board. 
  I am thinking we store the four corners in an array that we pass into the 
  function through a three dimentional pointer.
@@ -78,3 +59,58 @@ void createBoard(Slot ***boardCorners)
     (*boardCorners)[3] = &board[BOARD_SIZE - 1][0];
 }
 
+
+// Returns a pointer to a slot on the board based on it's coordinates.
+Slot *findSlot(Position *slotPosition, Slot ** boardCorners)
+{
+    // Creates a new pointer to a slot and sets it to the corner closest to the slot we are looking for.
+    Slot * currentSlot;
+    if(slotPosition->row < BOARD_SIZE/2)
+    {
+        if(slotPosition->column < BOARD_SIZE/2)
+        {
+            currentSlot = boardCorners[0];
+        }
+        else
+        {
+            currentSlot = boardCorners[1];
+        }
+    }
+    else
+    {
+        if(slotPosition->column < BOARD_SIZE/2)
+        {
+            currentSlot = boardCorners[3];
+        }
+        else
+        {
+            currentSlot = boardCorners[2];
+        }
+    }
+    
+    // Goes through the slots of the board until it finds the slot corresponding to the correct position.
+    while(slotPosition->row != currentSlot->slotPosition->row || slotPosition->column != currentSlot->slotPosition->column)
+    {
+        if(slotPosition->row < currentSlot->slotPosition->row)
+        {
+            currentSlot = currentSlot->up;  
+        }
+        
+        if(slotPosition->row > currentSlot->slotPosition->row)
+        {
+            currentSlot = currentSlot->down; 
+        }
+        
+        if(slotPosition->column < currentSlot->slotPosition->column)
+        {
+            currentSlot = currentSlot->left; 
+        }
+        
+        if(slotPosition->column > currentSlot->slotPosition->column)
+        {
+            currentSlot = currentSlot->right; 
+        }
+    }
+    // Returns a pointer to the slot we found.
+    return currentSlot;
+}

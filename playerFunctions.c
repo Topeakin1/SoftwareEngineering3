@@ -416,3 +416,13 @@ void PlayersInSlots(Player *player) {
 	printf("\nThe players coordinates are: %d.%d",player->playerPosition->row,player->playerPosition->column);
 	
 }
+
+void PlacePlayerInRandomSlot(Player * player, Slot **corners)
+{
+    PlayersInSlots(player);
+    
+    Slot *playerSlot = findSlot(player->playerPosition, corners);
+    playerSlot->currentPlayerCount += 1;
+    playerSlot->currentPlayers = realloc(playerSlot->currentPlayers, playerSlot->currentPlayerCount * sizeof(Player));
+    playerSlot->currentPlayers[playerSlot->currentPlayerCount - 1] = player;
+}

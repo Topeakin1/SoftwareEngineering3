@@ -9,7 +9,7 @@ Preparation
   - 7x7 square board of slots
   - Each slot refferences adjacent slots
   - Random generated slot types
-    Players placed in slots randomly
+  - Players placed in slots randomly
     
 Execution
     At least 2 players in the game

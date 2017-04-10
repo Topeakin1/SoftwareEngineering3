@@ -71,6 +71,7 @@ void Print(Player *players, int numberOfPlayers);
 // Slot functions
 void createBoard(Slot ***boardCorners);
 void PlayersNSlots(struct Slot Slots[],int NumberOfSlots);
+Slot *findSlot(Position *slotPosition, Slot ** boardCorners)
 
 
 #endif
