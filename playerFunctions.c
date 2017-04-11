@@ -353,6 +353,25 @@ void movePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
     }
 }
 
+
+
+
+void DealDamage(Player * player, int damage)
+{
+    if(player->lifePoints > damage)
+    {
+        player->lifePoints -= damage;
+        
+        printf("%s lost %d life points!\n", player->name, damage);
+    }
+    else
+    {
+        printf("%s lost &d life points!\n", player->name, player->lifePoints);
+        player->lifePoints = 0;
+        printf("%s has died!\n", player->name);
+    }
+}
+
 // Swaps calculates and prints damage being dealt.
 void attackPlayer(Player *attacker, Player *attacked)
 {

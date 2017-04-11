@@ -27,6 +27,8 @@ void createBoard(Slot ***boardCorners)
             *(board[row][column].slotPosition) = (Position){row, column};
             strcpy(board[row][column].slotType, slotTypes[RandInt(0, 2)]);
             // Gives every slot the correct position.
+           board[row][column].currentPlayerCount = 0;
+           board[row][column].currentPlayers = NULL;
         }
     }
     
@@ -114,3 +116,43 @@ Slot *findSlot(Position *slotPosition, Slot ** boardCorners)
     // Returns a pointer to the slot we found.
     return currentSlot;
 }
+
+// Pots the specified player into a slot on the board.
+void AddPlayerToSlot(Player * player, Slot * slot)
+{
+    Player **tempPlayers = realloc(slot->currentPlayers, ++(slot->currentPlayerCount));
+    if(tempPlayers)
+    {
+        slot->currentPlayers = tempPlayers;
+        slot->currentPlayers[slot->currentPlayerCount - 1] = player;
+        player->playerPosition->row = slot->slotPosition->row;
+        player->playerPosition->column = slot->slotPosition->column;
+    }
+}
+
+// Removes a player form the spacified slot on the board.
+void RemovePlayerFromSlot(Player * player, Slot * slot)
+{
+    int found = 0;
+    Player *tempPlayer;
+    int i = slot->currentPlayerCount;
+    
+    while((--i >= 0) && (slot->currentPlayers[i] != player));
+    
+    if(i >= 0)
+    {
+        slot->currentPlayers[--(slot->currentPlayerCount)] = slot->currentPlayers[i];
+        Player **tempPlayers = realloc(slot->currentPlayers, (slot->currentPlayerCount));
+        
+        if(tempPlayers)
+        {
+            slot->currentPlayers = tempPlayers;
+            slot->currentPlayers[slot->currentPlayerCount - 1] = player;
+        }
+    }
+    else
+    {
+        puts("Failed to remove player from slot.");
+    }
+}
+

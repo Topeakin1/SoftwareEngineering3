@@ -12,9 +12,10 @@ Preparation
   - Players placed in slots randomly
     
 Execution
+  - At least 2 players in the game
     Rounds
-     Move to a slot
-      Capabilities changed in relation to section C (same as assignment 2)
+  -  Move to a slot
+  -   Capabilities changed in relation to section C (same as assignment 2)
      Attack
       Near attack player in same slot or adjecent slots
        Same as attack in assignment 2
