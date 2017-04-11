@@ -417,6 +417,7 @@ void PlayersInSlots(Player *player) {
 	
 }
 
+
 void PlacePlayerInRandomSlot(Player * player, Slot **corners)
 {
     PlayersInSlots(player);
@@ -425,4 +426,15 @@ void PlacePlayerInRandomSlot(Player * player, Slot **corners)
     playerSlot->currentPlayerCount += 1;
     playerSlot->currentPlayers = realloc(playerSlot->currentPlayers, playerSlot->currentPlayerCount * sizeof(Player));
     playerSlot->currentPlayers[playerSlot->currentPlayerCount - 1] = player;
+
+}
+
+void EndOfGame() {
+	int i;
+	i=0;
+	printf("The game is over!\n");
+	while(players[i].lifepoints<0) {
+		i++;
+	}
+	printf("The %s is alive\n",players[i].name);
 }
