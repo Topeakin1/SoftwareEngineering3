@@ -6,12 +6,19 @@
 #define MAX_STRING_LENGTH 20
 #define BOARD_SIZE 7
 
-enum playerTypes{
+enum PlayerTypes{
     Elf,
     Human,
     Ogre,
     Wizard
 };
+
+enum Direction{
+    up,
+    down,
+    left,
+    right
+}
 
 // Struct for board positions.
 typedef struct Position
@@ -23,7 +30,7 @@ typedef struct Position
 // Structs for players and slots.
 typedef struct Player
 {
-    enum playerTypes type;
+    enum PlayerTypes type;
     char name[MAX_STRING_LENGTH];
     int lifePoints;
     int smartness;

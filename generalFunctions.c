@@ -57,7 +57,7 @@ int NumberInput(int maxDigits)
     
     do
     {
-        UserInput(maxDigits, tempInput);
+        UserInput(maxDigits + 1, tempInput);
     } while(!(returnNumber = strtol(tempInput, &endPtr, 10)) || *endPtr);
     
     return returnNumber;

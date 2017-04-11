@@ -3,16 +3,15 @@ Assignment 3
 
 Preparation
     Players
-     Type 
-     Name
-     Same capabilities
+  -  Type 
+  -  Name
+  -  Same capabilities
   - 7x7 square board of slots
   - Each slot refferences adjacent slots
   - Random generated slot types
   - Players placed in slots randomly
     
 Execution
-    At least 2 players in the game
     Rounds
      Move to a slot
       Capabilities changed in relation to section C (same as assignment 2)

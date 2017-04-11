@@ -10,16 +10,14 @@ int NumberOfPlayers()
     int numberOfPlayers;
     char tempInput[MAX_STRING_LENGTH];
     
-    printf("Input number of players: ");
-    fgets(tempInput, MAX_STRING_LENGTH - 1, stdin);
-    numberOfPlayers = strtol(tempInput, NULL, 10);
+    printf("Input number of players");
+    numberOfPlayers = NumberInput(1);
     // Takes a string as input and stores it as a nummber.
     
     while(numberOfPlayers < 2 || numberOfPlayers > PLAYER_MAX)
     {
-        printf("Number of players has to be between 2 and %d: ", PLAYER_MAX);
-        fgets(tempInput, MAX_STRING_LENGTH - 1, stdin);
-        numberOfPlayers = strtol(tempInput, NULL, 10);
+        printf("Number of players has to be between 2 and %d", PLAYER_MAX);
+        numberOfPlayers = NumberInput(1);
     }
     // Makes sure the input is a number between 2 and the max amount of players.
     
@@ -28,7 +26,7 @@ int NumberOfPlayers()
 
 
 //   Takes input for each player and stores their info in the players array.
-void InputPlayerInfo(int playerCoutn, Player * players)
+void InputPlayerInfo(int playerCount, Player * players)
 {
     void (*playerTypes[4])(Player *currentPlayer) = \
     {ElfPlayer, HumanPlayer, OgrePlayer, WizardPlayer};
@@ -37,29 +35,24 @@ void InputPlayerInfo(int playerCoutn, Player * players)
     char tempInput[MAX_STRING_LENGTH];
     int j;
     
-    for(int i = 0; i < playerCoutn; i++)
+    for(int i = 0; i < playerCount; i++)
     {
         do{
-            printf("\nPlayer %d \n\nInput player name: ", i + 1);
-        }while(*(fgets(players[i].name, MAX_STRING_LENGTH - 1, stdin)) == '\n');
+            printf("\nPlayer %d \n\nInput player name", i + 1);
+            UserInput(MAX_STRING_LENGTH, players[i].name);
+        }while(!players[i].name[0]);
         // Take a string as input and assign it to the name of the current player.
-        
-        j = 0;
-        while(players[i].name[++j] != '\n');
-        players[i].name[j] = '\0';
         
         
         printf("\nChose a player type: \
                     \n 1. Elf\
                     \n 2. Human\
                     \n 3. Ogre\
-                    \n 4. Wizard \n");
+                    \n 4. Wizard ");
                     
         do
         {
-            printf("  : ");
-            fgets(tempInput, MAX_STRING_LENGTH - 1, stdin);
-            players[i].type = strtol(tempInput, NULL, 10) - 1;
+            players[i].type = NumberInput(1) - 1;
         }while(players[i].type < 0 || players[i].type > 3);
         // Player choses a number between 1 and 4 and if it is valid, that player type gets chosen.
         
@@ -258,74 +251,95 @@ void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots)
 }
 
 // Swaps player position and adjusts their capabilities.
-void movePlayer(Player *player, Slot *slots, int currentPosition, int newPosition)
+void movePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
 {
-    int temp;
-    
-    temp = slots[currentPosition].currentPlayer;
-    slots[currentPosition].currentPlayer = slots[newPosition].currentPlayer;
-    slots[newPosition].currentPlayer = temp;
-    
-    
-    if(!strcmp(slots[newPosition].slotType, "Hill"))
+    Slot *tempSlot;
+    switch(moveDirection)
     {
-        if(player->dexterity < 50)
-        {
-            if(player->strength < 10)
-            {
-                player->strength = 0;
-                printf("You lost all of your strength!\n");
-            }
-            else
-            {
-                player->strength -= 10;
-                printf("You lost 10 of your strength!\n");
-            }
-        }
-        else if(player->dexterity >= 60)
-        {
-            if(player->strength > 90)
-            {
-                player->strength = 100;
-                printf("You gained maximum strength!\n");
-            }
-            else
-            {
-                player->strength += 10;
-                printf("You gained 10 strength!\n");
-            }
-        }
-        else
-        {
-            puts("");
-        }
+        case up:
+        tempSlot = tempSlot->up;
+        break;
+        case down:
+        tempSlot = tempSlot->down;
+        break;
+        case left:
+        tempSlot = tempSlot->left;
+        break;
+        case right:
+        tempSlot = tempSlot->right;
+        break;
+        default:
+        break;
     }
-    else if(!strcmp(slots[newPosition].slotType, "City"))
+    
+    
+    if(tempSlot)
     {
-        if(player->smartness <= 50)
+        currentSlot = tempSlot;
+        if(!strcmp(currentSlot->slotType, "Hill"))
         {
-            if(player->magicSkill < 10)
+            if(player->dexterity < 50)
             {
-                player->magicSkill = 0;
-                printf("You lost all of your magic skill!\n");
+                if(player->strength < 10)
+                {
+                    player->strength = 0;
+                    printf("You lost all of your strength!\n");
+                }
+                else
+                {
+                    player->strength -= 10;
+                    printf("You lost 10 of your strength!\n");
+                }
+            }
+            else if(player->dexterity >= 60)
+            {
+                if(player->strength > 90)
+                {
+                    player->strength = 100;
+                    printf("You gained maximum strength!\n");
+                }
+                else
+                {
+                    player->strength += 10;
+                    printf("You gained 10 strength!\n");
+                }
             }
             else
             {
-                player->magicSkill -= 10;
-                printf("You lost 10 of your magic skill!\n");
+                puts("");
             }
         }
-        else if(player->smartness > 60)
+        else if(currentSlot->slotType, "City"))
         {
-            if(player->magicSkill > 90)
+            if(player->smartness <= 50)
             {
-                player->magicSkill = 100;
-                printf("You gained maximum magic skill!\n");
+                if(player->magicSkill < 10)
+                {
+                    player->magicSkill = 0;
+                    printf("You lost all of your magic skill!\n");
+                }
+                else
+                {
+                    player->magicSkill -= 10;
+                    printf("You lost 10 of your magic skill!\n");
+                }
+            }
+            else if(player->smartness > 60)
+            {
+                if(player->magicSkill > 90)
+                {
+                    player->magicSkill = 100;
+                    printf("You gained maximum magic skill!\n");
+                }
+                else
+                {
+                    player->magicSkill += 10;
+                    printf("You gained 10 magic skill!\n");
+                }
             }
             else
             {
-                player->magicSkill += 10;
-                printf("You gained 10 magic skill!\n");
+                puts("");
             }
         }
         else
@@ -335,7 +349,7 @@ void movePlayer(Player *player, Slot *slots, int currentPosition, int newPositio
     }
     else
     {
-        puts("");
+        printf("You are on the edge of the board. There is no slot in that direction.");
     }
 }
 
@@ -418,15 +432,17 @@ void PlayersInSlots(Player *player) {
 }
 
 
-void PlacePlayerInRandomSlot(Player * player, Slot **corners)
+void PlacePlayersInRandomSlots(int playerCount, Player *players, Slot **corners)
 {
-    PlayersInSlots(player);
-    
-    Slot *playerSlot = findSlot(player->playerPosition, corners);
-    playerSlot->currentPlayerCount += 1;
-    playerSlot->currentPlayers = realloc(playerSlot->currentPlayers, playerSlot->currentPlayerCount * sizeof(Player));
-    playerSlot->currentPlayers[playerSlot->currentPlayerCount - 1] = player;
-
+    for(int i = 0; i <  playerCount; i++)
+    {
+        PlayersInSlots(players[i]);
+        
+        Slot *playerSlot = findSlot(players[i]->playerPosition, corners);
+        playerSlot->currentPlayerCount += 1;
+        playerSlot->currentPlayers = realloc(playerSlot->currentPlayers, playerSlot->currentPlayerCount * sizeof(Player));
+        playerSlot->currentPlayers[playerSlot->currentPlayerCount - 1] = players[i];
+    }
 }
 
 void EndOfGame() {
