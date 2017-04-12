@@ -1,6 +1,37 @@
 
 Assignment 3
 
+
+12/04 what's left:
+
+    Preparation in main.
+        Array of four  pointer for the corners. (Slot **corners = malloc(4);)
+        CreateBoard
+        set playerCount = NummberOfPLayers();
+        InputPlayerInfo
+        PlacePlayersInRandomSlots
+        
+    Execution on main:
+        Make sure while loop does what we want (keeps going while 2 or more players are alive.)
+            If player has 0 life, print "'name' has died!" set life to -1 and alivePlayers--
+            Else call GameRound using player.
+
+    Game Round
+        
+        while loop over array of players
+        
+        Get playerSlot = FindSlot(player.Position, **corners);
+        Ask for input (for example: 1 to move, 2 to near attack, 3 to distant attack, 4 to magic attack, 5 to quit);
+        If attack, call movePlayer. (use "while(MovePlayer(*player, *playerSlot)" to make sure the player actually moves.)
+        if attack: Call apropriate attack functions (Which we haven't made yet.)
+        
+        if player quits, set player lifePoints to -2. call RemovePlayerFromSlot(*player, *slot)
+    
+    Things I(Adrian) can work on.
+        Functions for attacking.
+    
+    
+    
 Preparation
     Players
   -  Type 

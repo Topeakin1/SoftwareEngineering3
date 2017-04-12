@@ -253,9 +253,10 @@ void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots)
 #endif
 
 // Swaps player position and adjusts their capabilities.
-int MovePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
+int MovePlayer(Player *player, Slot *currentSlot)
 {
     Slot *tempSlot;
+    enum moveDirection = // GetMoveDirection();
     switch(moveDirection)
     {
         case up:
