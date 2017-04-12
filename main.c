@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
-#include "Assignment3.h"
+#include <stdlib.h>
+#include "Assignment3Header.h"
 
 int main(void) {
 	srand(time(NULL));

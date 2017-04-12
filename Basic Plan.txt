@@ -30,8 +30,9 @@ Execution
     Life <= 0 Player leaves the game
     
 Termination
-    Only one living player left
-    All players have qiut the game
+  - Only one living player left
+  - All players have qiut the game
+    Show the end of game status
 
 pointers for cornes of board
 board with linked lists
@@ -78,17 +79,18 @@ Gameplay
  
  Round 1
  -player-
- 1 Move Left
- 2 Move Right
- 3 Move Up
- 4 Move Down
- 5 Near Attack
+ 1 Move
+  1 Move Left
+  2 Move Right
+  3 Move Up
+  4 Move Down
+ 2 Near Attack
   1 Attack player a
   2 
   3
- 6 Distant Attack
- 7 Magic Attack
- Q Quit
+ 3 Distant Attack
+ 4 Magic Attack
+ 5 Quit
  
  (Options only displlay if possible)
  

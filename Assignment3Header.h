@@ -18,7 +18,7 @@ enum Direction{
     down,
     left,
     right
-}
+};
 
 // Struct for board positions.
 typedef struct Position
@@ -66,10 +66,6 @@ int NumberInput(int maxDigits);
 // Player functions
 int NumberOfPlayers();
 void InputPlayerInfo(int playerCoutn, Player * players);
-void ElfPlayer(Player *currentPlayer);
-void HumanPlayer(Player *currentPlayer);
-void OgrePlayer(Player *currentPlayer);
-void WizardPlayer(Player *currentPlayer);
 void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots);
 void movePlayer(Player *player, Slot *slots, int currentPosition, int newPosition);
 void attackPlayer(Player *attacker, Player *attacked);
@@ -78,7 +74,9 @@ void Print(Player *players, int numberOfPlayers);
 // Slot functions
 void createBoard(Slot ***boardCorners);
 void PlayersNSlots(struct Slot Slots[],int NumberOfSlots);
-Slot *findSlot(Position *slotPosition, Slot ** boardCorners)
+Slot *findSlot(Position *slotPosition, Slot ** boardCorners);
+void AddPlayerToSlot(Player * player, Slot * slot);
+void RemovePlayerFromSlot(Player * player, Slot * slot);
 
 
 #endif

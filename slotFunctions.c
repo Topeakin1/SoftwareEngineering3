@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "Assignment2Header.h"
+#include "Assignment3Header.h"
 
 
 /* Functiion to create the game board. 
@@ -39,7 +39,6 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].down = &board[row + 1][column];
             board[row + 1][column].up = &board[row][column];
-            board[row][column].slotType, board[row + 1][column].slotPosition->row, board[row + 1][column].slotPosition->column, board[row + 1][column].slotType);
         }
     }
     
@@ -50,7 +49,6 @@ void createBoard(Slot ***boardCorners)
         {
             board[row][column].right = &board[row][column + 1];
             board[row][column + 1].left = &board[row][column];
-            board[row][column].slotType, board[row][column + 1].slotType);
         }
     }
     
@@ -136,23 +134,21 @@ void RemovePlayerFromSlot(Player * player, Slot * slot)
     int found = 0;
     Player *tempPlayer;
     int i = slot->currentPlayerCount;
-    
     while((--i >= 0) && (slot->currentPlayers[i] != player));
     
     if(i >= 0)
     {
-        slot->currentPlayers[--(slot->currentPlayerCount)] = slot->currentPlayers[i];
+        slot->currentPlayers[i] = slot->currentPlayers[--(slot->currentPlayerCount)];
         Player **tempPlayers = realloc(slot->currentPlayers, (slot->currentPlayerCount));
         
         if(tempPlayers)
         {
             slot->currentPlayers = tempPlayers;
-            slot->currentPlayers[slot->currentPlayerCount - 1] = player;
         }
     }
     else
     {
-        puts("Failed to remove player from slot.");
+        printf("Unable to remove player from slot.\n");
     }
 }
 

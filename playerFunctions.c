@@ -2,7 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Assignment2Header.h"
+#include "Assignment3Header.h"
 
 //  Takes user input for the amount of players and returns that as a number.
 int NumberOfPlayers()
@@ -22,44 +22,6 @@ int NumberOfPlayers()
     // Makes sure the input is a number between 2 and the max amount of players.
     
     return numberOfPlayers;
-}
-
-
-//   Takes input for each player and stores their info in the players array.
-void InputPlayerInfo(int playerCount, Player * players)
-{
-    void (*playerTypes[4])(Player *currentPlayer) = \
-    {ElfPlayer, HumanPlayer, OgrePlayer, WizardPlayer};
-    // Array of pointers to functions for each player type. 
-    
-    char tempInput[MAX_STRING_LENGTH];
-    int j;
-    
-    for(int i = 0; i < playerCount; i++)
-    {
-        do{
-            printf("\nPlayer %d \n\nInput player name", i + 1);
-            UserInput(MAX_STRING_LENGTH, players[i].name);
-        }while(!players[i].name[0]);
-        // Take a string as input and assign it to the name of the current player.
-        
-        
-        printf("\nChose a player type: \
-                    \n 1. Elf\
-                    \n 2. Human\
-                    \n 3. Ogre\
-                    \n 4. Wizard ");
-                    
-        do
-        {
-            players[i].type = NumberInput(1) - 1;
-        }while(players[i].type < 0 || players[i].type > 3);
-        // Player choses a number between 1 and 4 and if it is valid, that player type gets chosen.
-        
-        playerTypes[players[i].type](&players[i]);
-        players[i].lifePoints = 100;
-        // Calls the player type function and sets player life to 100;
-    }
 }
 
 /* 
@@ -116,6 +78,45 @@ void WizardPlayer(Player *currentPlayer)
     currentPlayer->dexterity = RandInt(1, 100);
 }
 
+//   Takes input for each player and stores their info in the players array.
+void InputPlayerInfo(int playerCount, Player * players)
+{
+    void (*playerTypes[4])(Player *currentPlayer) = \
+    {ElfPlayer, HumanPlayer, OgrePlayer, WizardPlayer};
+    // Array of pointers to functions for each player type. 
+    
+    char tempInput[MAX_STRING_LENGTH];
+    int j;
+    
+    for(int i = 0; i < playerCount; i++)
+    {
+        do{
+            printf("\nPlayer %d \n\nInput player name", i + 1);
+            UserInput(MAX_STRING_LENGTH, players[i].name);
+        }while(!players[i].name[0]);
+        // Take a string as input and assign it to the name of the current player.
+        
+        
+        printf("\nChose a player type: \
+                    \n 1. Elf\
+                    \n 2. Human\
+                    \n 3. Ogre\
+                    \n 4. Wizard ");
+                    
+        do
+        {
+            players[i].type = NumberInput(1) - 1;
+        }while(players[i].type < 0 || players[i].type > 3);
+        // Player choses a number between 1 and 4 and if it is valid, that player type gets chosen.
+        
+        playerTypes[players[i].type](&players[i]);
+        players[i].lifePoints = 100;
+        // Calls the player type function and sets player life to 100;
+    }
+}
+
+
+#if(0)
 void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots)
 {
     int i, position, choice;
@@ -249,24 +250,25 @@ void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots)
         }
     }
 }
+#endif
 
 // Swaps player position and adjusts their capabilities.
-void movePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
+int MovePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
 {
     Slot *tempSlot;
     switch(moveDirection)
     {
         case up:
-        tempSlot = tempSlot->up;
+        tempSlot = currentSlot->up;
         break;
         case down:
-        tempSlot = tempSlot->down;
+        tempSlot = currentSlot->down;
         break;
         case left:
-        tempSlot = tempSlot->left;
+        tempSlot = currentSlot->left;
         break;
         case right:
-        tempSlot = tempSlot->right;
+        tempSlot = currentSlot->right;
         break;
         default:
         break;
@@ -275,7 +277,10 @@ void movePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
     
     if(tempSlot)
     {
+        RemovePlayerFromSlot(player, currentSlot);
         currentSlot = tempSlot;
+        AddPlayerToSlot(player, currentSlot);
+        
         if(!strcmp(currentSlot->slotType, "Hill"))
         {
             if(player->dexterity < 50)
@@ -309,7 +314,7 @@ void movePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
                 puts("");
             }
         }
-        else if(currentSlot->slotType, "City"))
+        else if(currentSlot->slotType, "City")
         {
             if(player->smartness <= 50)
             {
@@ -346,10 +351,12 @@ void movePlayer(Player *player, Slot *currentSlot, enum Direction moveDirection)
         {
             puts("");
         }
+        return 0;
     }
     else
     {
-        printf("You are on the edge of the board. There is no slot in that direction.");
+        printf("Unable to move in that direction.\n");
+        return -1;
     }
 }
 
@@ -414,12 +421,8 @@ void Print(Player *players, int numberOfPlayers) {
 
 	for(int i=0; i<numberOfPlayers; i++) {
 		printf("%s (%s, %d)\n",players[i].name, playerTypes[players[i].type] ,players[i].lifePoints ); 
-	}	
-<<<<<<< HEAD
+	}
 }
-=======
-}
->>>>>>> 9db4c41b3d884227a4b440f5409f0f5c61c70ad5
 
 
 void GameRound(int alivePlayers, Player) { //prototype
@@ -453,14 +456,12 @@ void PlayersInSlots(Player *player) {
 
 void PlacePlayersInRandomSlots(int playerCount, Player *players, Slot **corners)
 {
+    Player * currentPlayer;
     for(int i = 0; i <  playerCount; i++)
     {
-        PlayersInSlots(players[i]);
-        
-        Slot *playerSlot = findSlot(players[i]->playerPosition, corners);
-        playerSlot->currentPlayerCount += 1;
-        playerSlot->currentPlayers = realloc(playerSlot->currentPlayers, playerSlot->currentPlayerCount * sizeof(Player));
-        playerSlot->currentPlayers[playerSlot->currentPlayerCount - 1] = players[i];
+        currentPlayer = &players[i];
+        PlayersInSlots(currentPlayer);
+        AddPlayerToSlot(currentPlayer, findSlot(currentPlayer->playerPosition, corners));
     }
 }
 
