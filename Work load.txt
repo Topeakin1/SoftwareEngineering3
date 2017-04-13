@@ -1,0 +1,13 @@
+Temitope Akinwale's input:
+Game Round function
+main loop
+End of game function
+Players in slots function
+function calls in main
+alive players implementation
+(used some functions from assignment 2)
+
+Adrian Wennberg's input:
+(used some functions from assignment 2
+
+
