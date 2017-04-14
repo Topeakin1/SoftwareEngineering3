@@ -33,7 +33,7 @@ Assignment 3
     
     
 Preparation
-    Players
+  - Players
   -  Type 
   -  Name
   -  Same capabilities
@@ -44,26 +44,26 @@ Preparation
     
 Execution
   - At least 2 players in the game
-    Rounds
+  - Rounds
   -  Move to a slot
   -   Capabilities changed in relation to section C (same as assignment 2)
-     Attack
-      Near attack player in same slot or adjecent slots
-       Same as attack in assignment 2
-      Distant attack
-       1 < distance < 5
-        If attacked has less Dexterity -0.3*attacker strength, otherwise nothing. 
-      Magic Attack
-       against any player
-       smartness = magic skill > 150
-       damage: 0.5 * magic skill + 0.2 * smartness
-     Quit
-    Life <= 0 Player leaves the game
+  -  Attack
+  -   Near attack player in same slot or adjecent slots
+  -    Same as attack in assignment 2
+  -   Distant attack
+  -    1 < distance < 5
+  -     If attacked has less Dexterity -0.3*attacker strength, otherwise nothing. 
+  -   Magic Attack
+  -    against any player
+  -    smartness = magic skill > 150
+  -    damage: 0.5 * magic skill + 0.2 * smartness
+  -  Quit
+  - Life <= 0 Player leaves the game
     
 Termination
   - Only one living player left
   - All players have qiut the game
-    Show the end of game status
+  - Show the end of game status
 
 pointers for cornes of board
 board with linked lists

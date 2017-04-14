@@ -9,7 +9,7 @@
  I am thinking we store the four corners in an array that we pass into the 
  function through a three dimentional pointer.
  */
-void createBoard(Slot ***boardCorners)
+void CreateBoard(Slot ***boardCorners)
 {
     // Alocates the board to store one column.
     Slot ** board = malloc(BOARD_SIZE * sizeof(Slot *));
@@ -61,7 +61,7 @@ void createBoard(Slot ***boardCorners)
 
 
 // Returns a pointer to a slot on the board based on it's coordinates.
-Slot *findSlot(Position *slotPosition, Slot ** boardCorners)
+Slot *FindSlot(Position *slotPosition, Slot ** boardCorners)
 {
     // Creates a new pointer to a slot and sets it to the corner closest to the slot we are looking for.
     Slot * currentSlot;
@@ -123,6 +123,10 @@ void AddPlayerToSlot(Player * player, Slot * slot)
     {
         slot->currentPlayers = tempPlayers;
         slot->currentPlayers[slot->currentPlayerCount - 1] = player;
+        if(!player->playerPosition)
+        {
+            player->playerPosition = malloc(sizeof(Position));
+        }
         player->playerPosition->row = slot->slotPosition->row;
         player->playerPosition->column = slot->slotPosition->column;
     }
@@ -151,4 +155,40 @@ void RemovePlayerFromSlot(Player * player, Slot * slot)
         printf("Unable to remove player from slot.\n");
     }
 }
+
+void AttackSearch(int reqDist, int currDist, Slot * currentSlot, Slot ** foundSlots, int * count, int explored[BOARD_SIZE][BOARD_SIZE])
+{
+    if(currDist >= reqDist - 1)
+    {
+        if(!explored[currentSlot->slotPosition->row][currentSlot->slotPosition->column])
+        {
+            explored[currentSlot->slotPosition->row][currentSlot->slotPosition->column] = 1;
+            if(currentSlot->currentPlayerCount)
+            {
+                *(foundSlots + (*count)++) = currentSlot;
+            }
+        }
+    }
+    if(currDist < reqDist)
+    {
+        if(currentSlot->up)
+        {
+           AttackSearch(reqDist, currDist + 1, currentSlot->up, foundSlots, count, explored);
+        }
+        if(currentSlot->down)
+        {
+            AttackSearch(reqDist, currDist + 1, currentSlot->down, foundSlots, count, explored);
+        }
+        if(currentSlot->left)
+        {
+            AttackSearch(reqDist, currDist + 1, currentSlot->left, foundSlots, count, explored);
+        }
+        if(currentSlot->right)
+        {
+            AttackSearch(reqDist, currDist + 1, currentSlot->right, foundSlots, count, explored);
+        }
+    }
+}
+
+
 

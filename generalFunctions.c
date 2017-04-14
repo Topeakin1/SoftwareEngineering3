@@ -62,3 +62,20 @@ int NumberInput(int maxDigits)
     
     return returnNumber;
 }
+
+void EndOfGame(int playerCount, Player * players) 
+{
+	int i = 0;
+	printf(" The game is over!\n");
+	while(players[i].lifePoints<0 && ++i < playerCount);
+        
+    if(players[i].lifePoints>0)
+    {
+        printf(" %s wins!\n",players[i].name);
+    }
+    else
+    {
+        printf(" Nobody is alive\n");
+    }
+    getchar();
+}

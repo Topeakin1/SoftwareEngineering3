@@ -10,13 +10,13 @@ int NumberOfPlayers()
     int numberOfPlayers;
     char tempInput[MAX_STRING_LENGTH];
     
-    printf("Input number of players");
+    printf(" Input number of players");
     numberOfPlayers = NumberInput(1);
     // Takes a string as input and stores it as a nummber.
     
     while(numberOfPlayers < 2 || numberOfPlayers > PLAYER_MAX)
     {
-        printf("Number of players has to be between 2 and %d", PLAYER_MAX);
+        printf(" Number of players has to be between 2 and %d", PLAYER_MAX);
         numberOfPlayers = NumberInput(1);
     }
     // Makes sure the input is a number between 2 and the max amount of players.
@@ -29,7 +29,6 @@ int NumberOfPlayers()
  * Uses the RandInt(int x, int y) function to generate 
  * numbers from x to y inclusive.
  * Stores thexe numbers in the current player's characteristics.
- * 
 */
 void ElfPlayer(Player *currentPlayer)
 {
@@ -91,13 +90,13 @@ void InputPlayerInfo(int playerCount, Player * players)
     for(int i = 0; i < playerCount; i++)
     {
         do{
-            printf("\nPlayer %d \n\nInput player name", i + 1);
+            printf("\n Player %d \n\n Input player name", i + 1);
             UserInput(MAX_STRING_LENGTH, players[i].name);
         }while(!players[i].name[0]);
         // Take a string as input and assign it to the name of the current player.
         
         
-        printf("\nChose a player type: \
+        printf("\n Chose a player type: \
                     \n 1. Elf\
                     \n 2. Human\
                     \n 3. Ogre\
@@ -115,148 +114,79 @@ void InputPlayerInfo(int playerCount, Player * players)
     }
 }
 
+void PlayersInSlots(Player *player) {
+	player->playerPosition = malloc(sizeof(Position)); 
+	player->playerPosition->row=RandInt(0, 6);
+	player->playerPosition->column= RandInt(0,6);
+	
+}
 
-#if(0)
-void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots)
+void PlacePlayersInRandomSlots(int playerCount, Player *players, Slot **corners)
 {
-    int i, position, choice;
-    int legalMoves[4];
-    int j, closestPlayerDist;
-    char tempInput[MAX_STRING_LENGTH];
-    
-    
-    for(i = 0; i < playerCount; i++)
+    Player * currentPlayer;
+    for(int i = 0; i <  playerCount; i++)
     {
-        if(players[i].lifePoints != 0)
-        {
-            position = -1;
-            while(slots[++position].currentPlayer != i);
-            // Finds the position of the current player.
-            
-            printf("Player: %s\nCurrent Slot: %d %s\n\n", players[i].name, (position + 1), slots[position].slotType);
-            
-            legalMoves[0] = (position != 0 && slots[position - 1].currentPlayer >= playerCount);
-            // Checks if it's possible to move to the left.
-            
-            legalMoves[1] = (position != (slotCount - 1) && slots[position + 1].currentPlayer >= playerCount);
-            // Checks if it's possible to move to the right.
-            
-            closestPlayerDist = slotCount;
-            j = position;
-            while(--j > -1 && (slots[j].currentPlayer >= playerCount));
-            
-            
-            if(j != -1)
-            {
-                closestPlayerDist = position - j;
-                legalMoves[2] = 1;
-                legalMoves[3] = 0;
-            }
-            
-            j = position;
-            while(++j < slotCount && slots[j].currentPlayer >= playerCount);
-            
-            if(j != slotCount)
-            {
-                if(closestPlayerDist > j - position)
-                {
-                    closestPlayerDist = j - position;
-                    legalMoves[2] = 0;
-                    legalMoves[3] = 1;
-                }
-                else if(closestPlayerDist == j - position)
-                {
-                    legalMoves[2] = 1;
-                    legalMoves[3] = 1; 
-                }
-            }
-            /* 
-             * Finds the closest player if any and the distance to them.
-             * Then finds the closest player on the right and checks who
-             * Then sets attacking the closest player as a legal move.
-             * If two players are the same distance away, both are legal.
-             */
-            
-            
-            
-            
-            j = 0;
-            printf("What do you want to do?\n");
-            
-            if(legalMoves[0])
-            {
-                legalMoves[0] = ++j;
-                printf(" %d: Move left to %s\n", j, slots[position-1].slotType);
-            }
-            
-            if(legalMoves[1])
-            {
-                legalMoves[1] = ++j;
-                printf(" %d: Move right to %s\n", j, slots[position+1].slotType);
-            }
-            
-            if(legalMoves[2])
-            {
-                legalMoves[2] = ++j;
-                printf(" %d: Attack %s\n", j, players[slots[position - closestPlayerDist].currentPlayer].name);
-            }
-            
-            if(legalMoves[3])
-            {
-                legalMoves[3] = ++j;
-                printf(" %d: Attack %s\n", j, players[slots[position + closestPlayerDist].currentPlayer].name);
-            }
-            
-            // Displays a list of options for the player based on what is possible from their position.
-            
-            do
-            {
-                printf("  : ");
-                fgets(tempInput, MAX_STRING_LENGTH - 1, stdin);
-                choice = strtol(tempInput, NULL, 10);
-            }while(choice < 1 || choice > j);
-            
-            // Takes input for what the player should do.
-            
-            
-            
-            if(choice == legalMoves[0])
-            {
-                movePlayer(&players[i], slots, position, position - 1);
-                // move left.
-            }
-            else if(choice == legalMoves[1])
-            {
-                movePlayer(&players[i], slots, position, position + 1);
-                // move right.
-            }
-            else if(choice == legalMoves[2])
-            {
-                attackPlayer(&players[i], &players[slots[position - closestPlayerDist].currentPlayer]);
-                // attack closest player on the left.
-            }
-            else if(choice == legalMoves[3])
-            {
-                attackPlayer(&players[i], &players[slots[position + closestPlayerDist].currentPlayer]);
-                // attack closest player on the right.
-            }
-            // Move or attack depending on user input.
-            
-            puts("");
-        }
-        else
-        {
-            printf("Player %d\nYou are dead.\n", players[i].name);
-        }
+        currentPlayer = &players[i];
+        PlayersInSlots(currentPlayer);
+        AddPlayerToSlot(currentPlayer, FindSlot(currentPlayer->playerPosition, corners));
     }
 }
-#endif
+
+
+void PrintOnePlayer(Player *currentPlayer)
+{
+    char *playerTypes[4] = {"Elf", "Human", "Ogre", "Wizard"};
+    
+    printf(" %s\n", currentPlayer->name); 
+    if(currentPlayer->lifePoints > 0)
+    {
+        printf(" Life: %d", currentPlayer->lifePoints);
+    }
+    else if(currentPlayer->lifePoints == -1)
+    {
+        printf(" Dead");
+    }
+    else if(currentPlayer->lifePoints == -2)
+    {
+        printf(" Quit");
+    }
+    printf("\n Type: %s\n", playerTypes[currentPlayer->type]);
+    printf(" Smartness: %d\n", currentPlayer->smartness);
+    printf(" Strength: %d\n", currentPlayer->strength);
+    printf(" Magic Skill: %d\n", currentPlayer->magicSkill);
+    printf(" Luck: %d\n", currentPlayer->luck);
+    printf(" Dexterity: %d\n\n", currentPlayer->dexterity);
+}
+
+
+void PrintAllPlayers(Player *players, int numberOfPlayers) {
+    
+    char *playerTypes[4] = {"Elf", "Human", "Ogre", "Wizard"};
+    
+    puts("");
+	for(int i=0; i<numberOfPlayers; i++) {
+		PrintOnePlayer(&(players[i]));
+	}
+}
+
+
+
+enum Direction GetMoveDirection()
+{
+    int inputNumber;
+    do
+    {
+        printf("\n Where do you want to move?\n 1. Up\n 2. Down\n 3. Left\n 4. Right\n 5. Back");
+        inputNumber = NumberInput(1) - 1;
+    }while(inputNumber < 0 || inputNumber > 4);
+    return inputNumber;
+}
 
 // Swaps player position and adjusts their capabilities.
 int MovePlayer(Player *player, Slot *currentSlot)
 {
     Slot *tempSlot;
-    enum moveDirection = // GetMoveDirection();
+    enum Direction moveDirection = GetMoveDirection();
     switch(moveDirection)
     {
         case up:
@@ -272,6 +202,7 @@ int MovePlayer(Player *player, Slot *currentSlot)
         tempSlot = currentSlot->right;
         break;
         default:
+        return 0;
         break;
     }
     
@@ -289,12 +220,12 @@ int MovePlayer(Player *player, Slot *currentSlot)
                 if(player->strength < 10)
                 {
                     player->strength = 0;
-                    printf("You lost all of your strength!\n");
+                    printf(" You lost all of your strength!\n");
                 }
                 else
                 {
                     player->strength -= 10;
-                    printf("You lost 10 of your strength!\n");
+                    printf(" You lost 10 of your strength!\n");
                 }
             }
             else if(player->dexterity >= 60)
@@ -302,12 +233,12 @@ int MovePlayer(Player *player, Slot *currentSlot)
                 if(player->strength > 90)
                 {
                     player->strength = 100;
-                    printf("You gained maximum strength!\n");
+                    printf(" You gained maximum strength!\n");
                 }
                 else
                 {
                     player->strength += 10;
-                    printf("You gained 10 strength!\n");
+                    printf(" You gained 10 strength!\n");
                 }
             }
             else
@@ -322,12 +253,12 @@ int MovePlayer(Player *player, Slot *currentSlot)
                 if(player->magicSkill < 10)
                 {
                     player->magicSkill = 0;
-                    printf("You lost all of your magic skill!\n");
+                    printf(" You lost all of your magic skill!\n");
                 }
                 else
                 {
                     player->magicSkill -= 10;
-                    printf("You lost 10 of your magic skill!\n");
+                    printf(" You lost 10 of your magic skill!\n");
                 }
             }
             else if(player->smartness > 60)
@@ -335,12 +266,12 @@ int MovePlayer(Player *player, Slot *currentSlot)
                 if(player->magicSkill > 90)
                 {
                     player->magicSkill = 100;
-                    printf("You gained maximum magic skill!\n");
+                    printf(" You gained maximum magic skill!\n");
                 }
                 else
                 {
                     player->magicSkill += 10;
-                    printf("You gained 10 magic skill!\n");
+                    printf(" You gained 10 magic skill!\n");
                 }
             }
             else
@@ -352,138 +283,284 @@ int MovePlayer(Player *player, Slot *currentSlot)
         {
             puts("");
         }
-        return 0;
+        return 1;
     }
     else
     {
         printf("Unable to move in that direction.\n");
-        return -1;
+        return 0;
     }
 }
 
 
 
 
-void DealDamage(Player * player, int damage)
+void DealDamage(Player * player, int damage, Slot **corners)
 {
     if(player->lifePoints > damage)
     {
         player->lifePoints -= damage;
         
-        printf("%s lost %d life points!\n", player->name, damage);
+        printf("\n %s lost %d life points!\n", player->name, damage);
     }
     else
     {
-        printf("%s lost &d life points!\n", player->name, player->lifePoints);
+        printf("\n %s lost %d life points!\n", player->name, player->lifePoints);
         player->lifePoints = 0;
-        printf("%s has died!\n", player->name);
+        printf(" %s has died!\n", player->name);
+        RemovePlayerFromSlot(player, FindSlot(player->playerPosition, corners));
     }
 }
 
-// Swaps calculates and prints damage being dealt.
-void attackPlayer(Player *attacker, Player *attacked)
+int NearAttack(Player * player, Slot *playerPosition, Slot **corners)
 {
-    int damage;
-    if(attacked->strength <= 70)
+    int nearbyPlayers = 0;
+    int explored[BOARD_SIZE][BOARD_SIZE];
+    Slot ** foundSlots = malloc(PLAYER_MAX);
+    int attackOptions = 0;
+    Player **playersToAttack = malloc(PLAYER_MAX);
+    int playerChoice;
+    
+    for(int i = 0; i < BOARD_SIZE; i++)
     {
-        damage = attacker->strength * 0.5;
-        printf("%s lost %d life points!\n", attacked->name, damage);
-        
-        if(attacked->lifePoints > damage)
+        for(int j = 0; j < BOARD_SIZE; j++)
         {
-            attacked->lifePoints -= damage;
+            explored[i][j] = 0;
         }
-        else
+    }
+    
+    AttackSearch(1, 0, playerPosition, foundSlots, &nearbyPlayers, explored);
+    
+    
+    for(int i = 0; i < nearbyPlayers; i++)
+    {
+        for(int j = 0; j < foundSlots[i]->currentPlayerCount; j++)
         {
-            attacked->lifePoints = 0;
-        printf("%s has died!\n", attacked->name);
+            if(foundSlots[i]->currentPlayers[j] != player)
+            {
+                playersToAttack[attackOptions++] = foundSlots[i]->currentPlayers[j];
+                printf(" %d Attack %s \n", attackOptions, foundSlots[i]->currentPlayers[j]->name);
+            }
+        }
+    }
+    
+    if(attackOptions > 0)
+    {
+        printf(" %d Back", ++attackOptions);
+        do
+        {
+            playerChoice = NumberInput(1);
+        }while(playerChoice <= 0 || playerChoice > attackOptions);
+        
+        if(playerChoice != attackOptions)
+        {
+            if(playersToAttack[--playerChoice]->strength <= 70)
+            {
+                DealDamage(playersToAttack[playerChoice], player->strength / 2, corners);
+            }
+            else
+            {
+                DealDamage(player, playersToAttack[playerChoice]->strength * 3 / 10, corners);
+            }
+            return 1;
         }
     }
     else
     {
-        damage = attacked->strength * 0.3;
-        printf("You lost %d life points!\n", damage);
-        
-        if(attacker->lifePoints > damage)
+        puts(" No players in range.");
+        getchar();
+    }
+    return 0;
+}
+
+int DistantAttack(Player * player, Slot *playerPosition, Slot **corners)
+{
+    int nearbyPlayers = 0;
+    int explored[BOARD_SIZE][BOARD_SIZE];
+    Slot ** foundSlots = malloc(PLAYER_MAX);
+    int attackOptions = 0;
+    Player **playersToAttack = malloc(PLAYER_MAX);
+    int playerChoice;
+    
+    for(int i = 0; i < BOARD_SIZE; i++)
+    {
+        for(int j = 0; j < BOARD_SIZE; j++)
         {
-            attacker->lifePoints -= damage;
+            explored[i][j] = 0;
+        }
+    }
+    
+    AttackSearch(4, 0, playerPosition, foundSlots, &nearbyPlayers, explored);
+    
+    
+    for(int i = 0; i < nearbyPlayers; i++)
+    {
+        for(int j = 0; j < foundSlots[i]->currentPlayerCount; j++)
+        {
+            if(foundSlots[i]->currentPlayers[j] != player)
+            {
+                playersToAttack[attackOptions++] = foundSlots[i]->currentPlayers[j];
+                printf(" %d Attack %s \n", attackOptions, foundSlots[i]->currentPlayers[j]->name);
+            }
+        }
+    }
+    
+    if(attackOptions > 0)
+    {
+        printf(" %d Back", ++attackOptions);
+        do
+        {
+            playerChoice = NumberInput(1);
+        }while(playerChoice <= 0 || playerChoice > attackOptions);
+        
+        if(playerChoice != attackOptions)
+        {
+            if(playersToAttack[--playerChoice]->dexterity < player->dexterity)
+            {
+                DealDamage(playersToAttack[playerChoice], player->strength * 3 / 10, corners);
+            }
+            else
+            {
+                printf(" %s dodged!\n", playersToAttack[playerChoice]->name);
+            }
+            return 1;
+        }
+    }
+    else
+    {
+        puts(" No players in range.");
+        getchar();
+    }
+    return 0;
+}
+
+int MagicAttack(Player * players, int playerCount, Player * currentPlayer, Slot *playerPosition, Slot **corners)
+{
+    int playerChoice;
+    int attackOptions = 0;
+    Player ** aliveOtherPlayers = malloc(5);
+    if(aliveOtherPlayers)
+    {
+        for(int i = 0; i < playerCount; i++)
+        {
+            if(&(players[i]) != currentPlayer && players[i].lifePoints > 0)
+            {
+                aliveOtherPlayers[attackOptions++] = &(players[i]);
+                printf(" %d Attack %s\n", attackOptions, aliveOtherPlayers[attackOptions - 1]->name);
+            }
+        }
+        
+        
+        if(attackOptions > 0)
+        {
+            printf(" %d Back", ++attackOptions);
+            do
+            {
+                playerChoice = NumberInput(1);
+            }while(playerChoice <= 0 || playerChoice > attackOptions);
+            
+            
+            if(playerChoice != attackOptions)
+            {
+                DealDamage(aliveOtherPlayers[playerChoice - 1], currentPlayer->magicSkill / 2 + currentPlayer->smartness / 5, corners);
+                return 1;
+            }
         }
         else
         {
-            attacker->lifePoints = 0;
-        printf("You have died!\n");
-        } 
-    }  
-}
-
-void Print(Player *players, int numberOfPlayers) {
-    
-    char *playerTypes[4] = {"Elf", "Human", "Ogre", "Wizard"};
-
-	for(int i=0; i<numberOfPlayers; i++) {
-		printf("%s (%s, %d)\n",players[i].name, playerTypes[players[i].type] ,players[i].lifePoints ); 
-	}
-}
-
-
-void GameRound(int alivePlayers, Player) { //prototype
-   while(players[i]<0) { //still unsure about this condition modify if neccesary
-   	playerSlot=FindSlot(player.Position, **corners);
-   }
-	for(i=0; i<playersCount; i++) {
-	   if(players[i].lifePoints>0) {
-	   printf("Enter 1 to attack 2 to quit 3 to move and 4 to distant attack\n");
-	   scanf(%d,&choice);
-	   if(choice==1) 
-	   {
-		attackPlayer(*attacker,*attacked);
-		} 
-			else if(choice==3) {
-				while(movePlayer(*player, *playerSlot)) {
-				movePlayer(*player,*slots, currentPosition, newPosition);	
-				}
-				 
-			} 
-			else if(choice==2) {
-				printf("You have quit the game\n");
-				players[i].lifepoints=-2;
-				RemovePlayerFromSlot(*player, *slot);
-				
-			}
-			else(choice==4) {
-				//distant attack function
-			}
-		}
-			puts(" ");
-		}
-	}
-		
-void PlayersInSlots(Player *player) {
-	player->playerPosition = malloc(sizeof(Position)); 
-	player->playerPosition->row=RandInt(0, 6);
-	player->playerPosition->column= RandInt(0,6);
-	printf("\nThe players coordinates are: %d.%d",player->playerPosition->row,player->playerPosition->column);
-	
-}
-
-
-void PlacePlayersInRandomSlots(int playerCount, Player *players, Slot **corners)
-{
-    Player * currentPlayer;
-    for(int i = 0; i <  playerCount; i++)
-    {
-        currentPlayer = &players[i];
-        PlayersInSlots(currentPlayer);
-        AddPlayerToSlot(currentPlayer, findSlot(currentPlayer->playerPosition, corners));
+            puts(" No other players alive\n");
+            getchar();
+        }
     }
+    return 0;
 }
 
-void EndOfGame() {
-	int i;
-	i=0;
-	printf("The game is over!\n");
-	while(players[i].lifepoints<0) {
-		i++;
-	}
-	printf("The %s is alive\n",players[i].name);
+int AttackChoice(Player * players, int playerCount, Player * currentPlayer, Slot *playerPosition, Slot **corners)
+{
+    int magicAttackAvailable = (currentPlayer->magicSkill + currentPlayer->smartness) >150;
+    int choice;
+    
+    printf("\n 1 Near Attack\n 2 Distant Attack\n");
+    if(magicAttackAvailable)
+    {
+        printf(" 3 Magic Attack\n 4 Back");
+    }
+    else
+    {
+        printf(" 3 Back");
+    }
+    
+    do
+    {
+        choice = NumberInput(1);
+    }while(choice <= 0 || choice > 3 + magicAttackAvailable);
+    
+    switch(choice)
+    {
+        case 1:
+        return NearAttack(currentPlayer, playerPosition, corners);
+        break;
+        case 2:
+        return DistantAttack(currentPlayer, playerPosition, corners);
+        break;
+        case 3:
+        if(magicAttackAvailable)
+        {
+            return MagicAttack(players, playerCount, currentPlayer, playerPosition, corners);
+            break;
+        }
+        default:
+        break;
+    }
+    return 0;
 }
+
+
+void GameRound(int playerCount, int *alivePlayers, Player * players, Slot **corners) 
+{ 
+    int choice;
+    Slot * playerPosition;
+	for(int i=0; i < playerCount; i++) 
+    {
+	    if(players[i].lifePoints>0) 
+        {
+            choice = 0;
+            playerPosition = FindSlot(players[i].playerPosition, corners);
+            while(choice == 0)
+            {
+                printf("\n Player %d (%d, %d)\n %s\n 1 to attack\n 2 to move\n 3 to quit", i + 1, players[i].playerPosition->row + 1, players[i].playerPosition->column + 1, players[i].name);
+                choice = NumberInput(1);
+                switch(choice)
+                {
+                    case 1:
+                    choice = AttackChoice(players, playerCount, &players[i], playerPosition, corners);
+                    break;
+                    case 2:
+                    choice = MovePlayer(&players[i], playerPosition);
+                    break;
+                    case 3:
+                    printf(" %s has quit the game.\n",players[i].name);
+                    players[i].lifePoints = -2;
+                    (*alivePlayers)--;
+                    RemovePlayerFromSlot(&players[i], playerPosition);
+                    break;
+                    default:
+                    choice = 0;
+                    break;
+                }
+            }
+		}
+        else if(players[i].lifePoints==0)
+        {
+            printf("\n %s is dead \n",players[i].name);
+        }
+        
+        if(players[i].lifePoints==0) 
+        {
+	      players[i].lifePoints=-1;	
+		  (*alivePlayers)--; 
+        }
+	}
+}
+
+

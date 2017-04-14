@@ -6,11 +6,18 @@
 #define MAX_STRING_LENGTH 20
 #define BOARD_SIZE 7
 
-enum playerTypes{
+enum PlayerTypes{
     Elf,
     Human,
     Ogre,
     Wizard
+};
+
+enum Direction{
+    up,
+    down,
+    left,
+    right
 };
 
 // Struct for board positions.
@@ -23,7 +30,7 @@ typedef struct Position
 // Structs for players and slots.
 typedef struct Player
 {
-    enum playerTypes type;
+    enum PlayerTypes type;
     char name[MAX_STRING_LENGTH];
     int lifePoints;
     int smartness;
@@ -55,23 +62,21 @@ typedef struct Slot
 int RandInt(int min, int max);
 void UserInput(int maxLength, char *returnString);
 int NumberInput(int maxDigits);
+void EndOfGame(int playerCount, Player * players);
 
 // Player functions
 int NumberOfPlayers();
 void InputPlayerInfo(int playerCoutn, Player * players);
-void ElfPlayer(Player *currentPlayer);
-void HumanPlayer(Player *currentPlayer);
-void OgrePlayer(Player *currentPlayer);
-void WizardPlayer(Player *currentPlayer);
-void PlayerAction(int playerCount, int slotCount, Player *players, Slot *slots);
-void movePlayer(Player *player, Slot *slots, int currentPosition, int newPosition);
-void attackPlayer(Player *attacker, Player *attacked);
-void Print(Player *players, int numberOfPlayers);
+void PlacePlayersInRandomSlots(int playerCount, Player *players, Slot **corners);
+void GameRound(int playerCount, int *alivePlayers, Player * players, Slot **corners);
+void PrintAllPlayers(Player *players, int numberOfPlayers);
 
 // Slot functions
-void createBoard(Slot ***boardCorners);
+void CreateBoard(Slot ***boardCorners);
 void PlayersNSlots(struct Slot Slots[],int NumberOfSlots);
-Slot *findSlot(Position *slotPosition, Slot ** boardCorners)
-
+Slot *FindSlot(Position *slotPosition, Slot ** boardCorners);
+void AddPlayerToSlot(Player * player, Slot * slot);
+void RemovePlayerFromSlot(Player * player, Slot * slot);
+void AttackSearch(int reqDist, int currDist, Slot * currentSlot, Slot ** foundSlots, int * count, int explored[BOARD_SIZE][BOARD_SIZE]);
 
 #endif
