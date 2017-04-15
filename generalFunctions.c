@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "Assignment3Header.h"
 
+// Generates a random integer from min to max inclusive.
 int RandInt(int min, int max)
 {
     max -= min;
@@ -21,6 +22,7 @@ int RandInt(int min, int max)
     return randInt;
 }
 
+// Takes a string input of a specified max length and returns it through returnString.
 void UserInput(int maxLength, char *returnString)
 {
     char *tempInput = malloc((maxLength + 1));
@@ -37,7 +39,7 @@ void UserInput(int maxLength, char *returnString)
         if(!tempInput[i])
         {
             while(getchar() != '\n');
-            printf("Input must be less than %d characters.", maxLength);
+            printf(" Input must be less than %d characters.", maxLength);
         }
         else
         {
@@ -48,7 +50,7 @@ void UserInput(int maxLength, char *returnString)
     strcpy(returnString, tempInput);
 }
 
-
+// Uses UserInput to take a string input then converts it to a number that is then returned.
 int NumberInput(int maxDigits)
 {
     char *tempInput = malloc(maxDigits);
@@ -63,13 +65,14 @@ int NumberInput(int maxDigits)
     return returnNumber;
 }
 
+// Prints the winner og the game, if any.
 void EndOfGame(int playerCount, Player * players) 
 {
 	int i = 0;
 	printf(" The game is over!\n");
 	while(players[i].lifePoints<0 && ++i < playerCount);
         
-    if(players[i].lifePoints>0)
+    if(i < playerCount)
     {
         printf(" %s wins!\n",players[i].name);
     }

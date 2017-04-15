@@ -4,15 +4,9 @@
 // Defined constant variables
 #define PLAYER_MAX 6
 #define MAX_STRING_LENGTH 20
-#define BOARD_SIZE 7
+#define BOARD_SIZE 3
 
-enum PlayerTypes{
-    Elf,
-    Human,
-    Ogre,
-    Wizard
-};
-
+// enum for direction. Used when takig input for movement and moving the player.
 enum Direction{
     up,
     down,
@@ -30,7 +24,7 @@ typedef struct Position
 // Structs for players and slots.
 typedef struct Player
 {
-    enum PlayerTypes type;
+    int type;
     char name[MAX_STRING_LENGTH];
     int lifePoints;
     int smartness;

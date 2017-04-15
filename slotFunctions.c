@@ -115,10 +115,10 @@ Slot *FindSlot(Position *slotPosition, Slot ** boardCorners)
     return currentSlot;
 }
 
-// Pots the specified player into a slot on the board.
+// Puts the specified player into a slot on the board.
 void AddPlayerToSlot(Player * player, Slot * slot)
 {
-    Player **tempPlayers = realloc(slot->currentPlayers, ++(slot->currentPlayerCount));
+    Player **tempPlayers = realloc(slot->currentPlayers, sizeof(Player*) * ++(slot->currentPlayerCount));
     if(tempPlayers)
     {
         slot->currentPlayers = tempPlayers;
@@ -132,7 +132,7 @@ void AddPlayerToSlot(Player * player, Slot * slot)
     }
 }
 
-// Removes a player form the spacified slot on the board.
+// Removes a player form the specified slot on the board.
 void RemovePlayerFromSlot(Player * player, Slot * slot)
 {
     int found = 0;
@@ -143,7 +143,7 @@ void RemovePlayerFromSlot(Player * player, Slot * slot)
     if(i >= 0)
     {
         slot->currentPlayers[i] = slot->currentPlayers[--(slot->currentPlayerCount)];
-        Player **tempPlayers = realloc(slot->currentPlayers, (slot->currentPlayerCount));
+        Player **tempPlayers = realloc(slot->currentPlayers, sizeof(Player*) * (slot->currentPlayerCount));
         
         if(tempPlayers)
         {
@@ -156,6 +156,8 @@ void RemovePlayerFromSlot(Player * player, Slot * slot)
     }
 }
 
+// Returns through the "foundSlots" array, all the slots within a distance "reqDist" that has players in them.
+// Recursively calls itsself so it searches the board until a certain distance is reached.
 void AttackSearch(int reqDist, int currDist, Slot * currentSlot, Slot ** foundSlots, int * count, int explored[BOARD_SIZE][BOARD_SIZE])
 {
     if(currDist >= reqDist - 1)
@@ -165,7 +167,7 @@ void AttackSearch(int reqDist, int currDist, Slot * currentSlot, Slot ** foundSl
             explored[currentSlot->slotPosition->row][currentSlot->slotPosition->column] = 1;
             if(currentSlot->currentPlayerCount)
             {
-                *(foundSlots + (*count)++) = currentSlot;
+                foundSlots[(*count)++] = currentSlot;
             }
         }
     }

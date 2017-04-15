@@ -3,16 +3,20 @@
 #include <stdlib.h>
 #include "Assignment3Header.h"
 
+
 int main(void) {
 	srand(time(NULL));
+    
+    // Array that stores all the players.
 	Player players[PLAYER_MAX]; 
-	
-    Slot **corners = malloc(4); 
+    
+	// Array of size 4 to hold 4 pointers to the corners of the board.
+    Slot **corners = malloc(sizeof(Slot*) * 4); 
     int i;
 	int alivePlayers;
 	int playersCount; 
 	
-	CreateBoard(&corners); //
+	CreateBoard(&corners); // Creates a 7x7 board and returns the four corners through 
     
 	playersCount = NumberOfPlayers();
 	alivePlayers = playersCount;

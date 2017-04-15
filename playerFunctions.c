@@ -116,8 +116,8 @@ void InputPlayerInfo(int playerCount, Player * players)
 
 void PlayersInSlots(Player *player) {
 	player->playerPosition = malloc(sizeof(Position)); 
-	player->playerPosition->row=RandInt(0, 6);
-	player->playerPosition->column= RandInt(0,6);
+	player->playerPosition->row=RandInt(0, BOARD_SIZE - 1);
+	player->playerPosition->column= RandInt(0,BOARD_SIZE - 1);
 	
 }
 
@@ -316,9 +316,9 @@ int NearAttack(Player * player, Slot *playerPosition, Slot **corners)
 {
     int nearbyPlayers = 0;
     int explored[BOARD_SIZE][BOARD_SIZE];
-    Slot ** foundSlots = malloc(PLAYER_MAX);
+    Slot ** foundSlots = malloc(sizeof(Slot*) * PLAYER_MAX);
     int attackOptions = 0;
-    Player **playersToAttack = malloc(PLAYER_MAX);
+    Player **playersToAttack = malloc(sizeof(Player*) * PLAYER_MAX);
     int playerChoice;
     
     for(int i = 0; i < BOARD_SIZE; i++)
@@ -339,14 +339,14 @@ int NearAttack(Player * player, Slot *playerPosition, Slot **corners)
             if(foundSlots[i]->currentPlayers[j] != player)
             {
                 playersToAttack[attackOptions++] = foundSlots[i]->currentPlayers[j];
-                printf(" %d Attack %s \n", attackOptions, foundSlots[i]->currentPlayers[j]->name);
+                printf(" %d. Attack %s \n", attackOptions, foundSlots[i]->currentPlayers[j]->name);
             }
         }
     }
     
     if(attackOptions > 0)
     {
-        printf(" %d Back", ++attackOptions);
+        printf(" %d. Back", ++attackOptions);
         do
         {
             playerChoice = NumberInput(1);
@@ -377,9 +377,9 @@ int DistantAttack(Player * player, Slot *playerPosition, Slot **corners)
 {
     int nearbyPlayers = 0;
     int explored[BOARD_SIZE][BOARD_SIZE];
-    Slot ** foundSlots = malloc(PLAYER_MAX);
+    Slot ** foundSlots = malloc(sizeof(Slot*) * PLAYER_MAX);
     int attackOptions = 0;
-    Player **playersToAttack = malloc(PLAYER_MAX);
+    Player **playersToAttack = malloc(sizeof(Player*) * PLAYER_MAX);
     int playerChoice;
     
     for(int i = 0; i < BOARD_SIZE; i++)
@@ -393,6 +393,7 @@ int DistantAttack(Player * player, Slot *playerPosition, Slot **corners)
     AttackSearch(4, 0, playerPosition, foundSlots, &nearbyPlayers, explored);
     
     
+    
     for(int i = 0; i < nearbyPlayers; i++)
     {
         for(int j = 0; j < foundSlots[i]->currentPlayerCount; j++)
@@ -400,14 +401,14 @@ int DistantAttack(Player * player, Slot *playerPosition, Slot **corners)
             if(foundSlots[i]->currentPlayers[j] != player)
             {
                 playersToAttack[attackOptions++] = foundSlots[i]->currentPlayers[j];
-                printf(" %d Attack %s \n", attackOptions, foundSlots[i]->currentPlayers[j]->name);
+                printf(" %d. Attack %s \n", attackOptions, foundSlots[i]->currentPlayers[j]->name);
             }
         }
     }
     
     if(attackOptions > 0)
     {
-        printf(" %d Back", ++attackOptions);
+        printf(" %d. Back", ++attackOptions);
         do
         {
             playerChoice = NumberInput(1);
@@ -423,6 +424,8 @@ int DistantAttack(Player * player, Slot *playerPosition, Slot **corners)
             {
                 printf(" %s dodged!\n", playersToAttack[playerChoice]->name);
             }
+            free(foundSlots);
+            free(playersToAttack);
             return 1;
         }
     }
@@ -431,6 +434,8 @@ int DistantAttack(Player * player, Slot *playerPosition, Slot **corners)
         puts(" No players in range.");
         getchar();
     }
+    free(foundSlots);
+    free(playersToAttack);
     return 0;
 }
 
@@ -438,7 +443,7 @@ int MagicAttack(Player * players, int playerCount, Player * currentPlayer, Slot 
 {
     int playerChoice;
     int attackOptions = 0;
-    Player ** aliveOtherPlayers = malloc(5);
+    Player ** aliveOtherPlayers = malloc(sizeof(Player*) * PLAYER_MAX);
     if(aliveOtherPlayers)
     {
         for(int i = 0; i < playerCount; i++)
@@ -446,14 +451,14 @@ int MagicAttack(Player * players, int playerCount, Player * currentPlayer, Slot 
             if(&(players[i]) != currentPlayer && players[i].lifePoints > 0)
             {
                 aliveOtherPlayers[attackOptions++] = &(players[i]);
-                printf(" %d Attack %s\n", attackOptions, aliveOtherPlayers[attackOptions - 1]->name);
+                printf(" %d. Attack %s\n", attackOptions, aliveOtherPlayers[attackOptions - 1]->name);
             }
         }
         
         
         if(attackOptions > 0)
         {
-            printf(" %d Back", ++attackOptions);
+            printf(" %d. Back", ++attackOptions);
             do
             {
                 playerChoice = NumberInput(1);
@@ -463,6 +468,7 @@ int MagicAttack(Player * players, int playerCount, Player * currentPlayer, Slot 
             if(playerChoice != attackOptions)
             {
                 DealDamage(aliveOtherPlayers[playerChoice - 1], currentPlayer->magicSkill / 2 + currentPlayer->smartness / 5, corners);
+                free(aliveOtherPlayers);
                 return 1;
             }
         }
@@ -472,6 +478,7 @@ int MagicAttack(Player * players, int playerCount, Player * currentPlayer, Slot 
             getchar();
         }
     }
+    free(aliveOtherPlayers);
     return 0;
 }
 
@@ -520,7 +527,7 @@ void GameRound(int playerCount, int *alivePlayers, Player * players, Slot **corn
 { 
     int choice;
     Slot * playerPosition;
-	for(int i=0; i < playerCount; i++) 
+	for(int i=0; i < playerCount && (*alivePlayers) > 1; i++) 
     {
 	    if(players[i].lifePoints>0) 
         {
@@ -528,7 +535,7 @@ void GameRound(int playerCount, int *alivePlayers, Player * players, Slot **corn
             playerPosition = FindSlot(players[i].playerPosition, corners);
             while(choice == 0)
             {
-                printf("\n Player %d (%d, %d)\n %s\n 1 to attack\n 2 to move\n 3 to quit", i + 1, players[i].playerPosition->row + 1, players[i].playerPosition->column + 1, players[i].name);
+                printf("\n Player %d (%d, %d)\n %s\n 1. to Attack\n 2. to Move\n 3. to Quit", i + 1, players[i].playerPosition->row + 1, players[i].playerPosition->column + 1, players[i].name);
                 choice = NumberInput(1);
                 switch(choice)
                 {
